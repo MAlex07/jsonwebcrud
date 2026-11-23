@@ -81,7 +81,7 @@ function App() {
     }
   }
   async function handleCreditDown(user: User){
-    if(!confirm("Biztosan szeretnéd 1000-el emelni a kreditet")){
+    if(!confirm("Biztosan szeretnéd 1000-el csökkenteni a kreditet")){
       return;
     }
     try{
@@ -98,6 +98,55 @@ function App() {
       );
     }catch(error){
       console.error(error)
+    }
+  }
+  async function handleCreditZero(user: User){
+    if(!confirm("Biztosan szeretnéd 0-ni kreditet")){
+      return;
+    }
+    try{
+      const respons = await fetch("http://localhost:3000/users/" + user.id, {
+        method: "PATCH",
+        headers: {"Content-type": "application.json"},
+        body: JSON.stringify({kredit: user.kredit = 0})
+
+      });
+      setUsers((elozo)=> 
+        elozo.map(u => 
+          u.id === user.id ? {...u, kredit: user.kredit = 0}:u,
+        )
+      );
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  async function handleTankötelezetseg(user: User){
+    const ujAllapot = !user.tankoteles;
+
+    if(user.eletkor >= 18 && ujAllapot === true){
+      alert("18év kor felett csak false lehet")
+      return
+    }
+
+    if(!confirm("Biztosan meg szeretnéd változtatni")){
+      return
+    }
+
+    try{
+      const respons = await fetch("http://localhost:3000/users/" + user.id, {
+        method: "PATCH",
+        headers: {"Content-type": "application.json"},
+        body: JSON.stringify({tankoteles: ujAllapot})
+
+      });
+      setUsers((elozo)=> 
+        elozo.map(u => 
+          u.id === user.id ? {...u, tankoteles: ujAllapot}:u,
+        )
+      );
+    }catch(err){
+      console.error(err)
     }
   }
 
@@ -121,6 +170,7 @@ function App() {
           <tr key={user.id}>
             <td>{user.nev}</td>
             <td>{user.osztaly}</td>
+            <td>{user.eletkor}</td>
             <td>{user.kredit}</td>
             <td>{(user.tankoteles) ? "tanköteles" : "nem tanköteles"}</td>
             <td>
@@ -134,6 +184,12 @@ function App() {
               <button
               onClick={() => handleCreditDown(user)}
               >-1000</button>
+              <button
+              onClick={() => handleCreditZero(user)}
+              >Nullázás</button>
+              <button
+              onClick={() => handleTankötelezetseg(user)}
+              >Tankötelezetség módosítása</button>
             </td>
           </tr>
           ))}
