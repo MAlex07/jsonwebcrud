@@ -3,16 +3,22 @@
     {
       "nev": "Kiss Tamás",
       "osztaly": "12.D",
+      "kredit": 4000,
+      "tankoteles": false,
       "id": "0BF38JQj3EA"
     },
     {
       "nev": "Nagy Endre",
       "osztaly": "3.C",
+      "kredit": 3000,
+      "tankoteles": true,
       "id": "aUwrdNzox08"
     },
     {
       "nev": "Lucia",
       "osztaly": "12.C",
+      "kredit": 3000,
+      "tankoteles": false,
       "id": "84vdSmJS8iE"
     }
   ],
